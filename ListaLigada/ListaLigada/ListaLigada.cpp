@@ -8,6 +8,7 @@ struct NO {
 };
 
 NO* primeiro = NULL;
+NO* ultimo = NULL;
 
 // headers
 void menu();
@@ -79,6 +80,7 @@ void inicializar()
 	}
 
 	primeiro = NULL;
+	ultimo = NULL;
 	cout << "Lista inicializada \n";
 
 }
@@ -127,20 +129,61 @@ void inserirElemento()
 	if (primeiro == NULL)
 	{
 		primeiro = novo;
+		ultimo = novo;
 	}
 	else
 	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
-		}
-		aux->prox = novo;
+		ultimo->prox = novo;
+		ultimo = novo;
 	}
 }
 
 void excluirElemento()
 {
+	int valor = 0;
+	cout << "Digite um valor a ser deletado: " << endl;
+	cin >> valor;
+
+	NO* remover = posicaoElemento(valor);
+
+	if (remover == NULL) {
+		cout << "Este valor nao existe. " << endl; 
+	}
+	else
+	{
+		if (remover == primeiro) {
+
+			primeiro = primeiro->prox;
+
+			if (remover == ultimo)
+			{
+				ultimo = NULL;
+			}
+
+			free(remover);
+		}
+		else 
+		{
+			NO* atual = primeiro;
+			NO* anterior = NULL;
+
+			while (atual != remover)
+			{
+				anterior = atual;
+				atual = atual->prox;
+			}
+
+			anterior->prox = atual->prox;
+
+			if (remover == ultimo)
+			{
+				ultimo = anterior;
+			}
+
+			free(remover);
+		}
+	}
+
 
 }
 
@@ -149,4 +192,15 @@ void buscarElemento()
 
 }
 
-
+NO* posicaoElemento(int numero)
+{
+	NO* aux = primeiro;
+	while (aux != NULL) {
+		if (aux->valor == numero)
+		{
+			break;
+		}
+		aux = aux->prox;
+	}
+	return aux;
+}

@@ -121,33 +121,95 @@ void inserirElemento()
 		return;
 	}
 
+	NO* atual = primeiro;
+	NO* anterior = NULL;
+
 	cout << "Digite o elemento: ";
 	cin >> novo->valor;
 	novo->prox = NULL;
 
-	if (primeiro == NULL)
-	{
-		primeiro = novo;
+	while (atual != NULL && atual->valor < novo->valor) {
+		anterior = atual;
+		atual = atual->prox;
 	}
-	else
-	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
+
+	if (atual != NULL && atual->valor == novo->valor) {
+		cout << "Este elemento ja existe. ";
+		free(novo);
+	}
+
+	else {
+		if (anterior == NULL) {
+			primeiro = novo;
 		}
-		aux->prox = novo;
+		else
+		{
+			anterior->prox = novo;
+		}
+		novo->prox = atual;
 	}
 }
 
 void excluirElemento()
 {
+	int valor = 0;
+	cout << "Digite o valor que deseja excluir: ";
+	cin >> valor;
 
+	NO* atual = primeiro;
+	NO* anterior = NULL;
+
+	while (atual != NULL && atual->valor < valor)
+	{
+		anterior = atual;
+		atual = atual->prox;
+	}
+
+	if (atual == NULL || atual->valor != valor)
+	{
+		cout << "ELEMENTO NAO ENCONTRADO" << endl;
+		return;
+	}
+
+	if (anterior == NULL)
+	{
+		primeiro = atual->prox;
+	}
+	else
+	{
+		anterior->prox = atual->prox;
+	}
+
+	free(atual);
+	cout << "Elemento excluido" << endl;
 }
 
 void buscarElemento()
 {
+	int valor = 0;
+	cout << "Digite o valor que deseja buscar: ";
+	cin >> valor;
 
+	NO* aux = primeiro;
+
+	while (aux != NULL)
+	{
+		if (aux->valor == valor)
+		{
+			cout << "ENCONTRADO" << endl;
+			return;
+		}
+
+		if (aux->valor > valor)
+		{
+			cout << "ELEMENTO NAO ENCONTRADO" << endl;
+			return;
+		}
+
+		aux = aux->prox; 
+	}
+
+	cout << "ELEMENTO NAO ENCONTRADO";
 }
 
 
